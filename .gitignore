@@ -1,5 +1,13 @@
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
 # visual studio debug and other files
 .vs/
 
 #debug files
 x64/
+*/Debug
