@@ -1,0 +1,5 @@
+# visual studio debug and other files
+.vs/
+
+#debug files
+x64/
