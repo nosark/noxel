@@ -38,11 +38,17 @@ int main() {
     }
 
     Vertex vertices[] = {
-       -0.5f, -0.5f, 0.0f,
-        0.0f, 0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
+        Vertex { 0.5f, 0.5f, 0.0f }, //top right
+        Vertex { 0.5f, -0.5f, 0.0f }, //bottom right 
+        Vertex { -0.5f, -0.5f, 0.0f }, // bottom left
+        Vertex { -0.5f, 0.5f, 0.0f }, //top left
     };
 
+    // drawing order for the element buffer
+    unsigned int indices[] = {
+        0, 1, 3,
+        1, 2, 3,
+    };
 
     const std::string vertex_shader_file_path = "vertex_shader.glsl";
     std::string vertex_shader_src;
@@ -116,6 +122,14 @@ int main() {
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
+    // create element buffer object
+    unsigned int EBO;
+    glGenBuffers(1, &EBO);
+
+    // bind and buffer EBO
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
     // Bind buffer and prep data
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -135,7 +149,8 @@ int main() {
         //use shader_program
         glUseProgram(shader_program);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
