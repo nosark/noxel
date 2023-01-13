@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\lol\Documents\dependencies\glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\lol\Documents\dependencies\glfw-3.3.8.bin.WIN64\glfw-3.3.8.bin.WIN64\include;C:\Users\lol\Documents\dependencies\glad (1)\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,7 +130,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="noxel_engine.cpp" />
+    <ClCompile Include="..\..\..\..\Documents\dependencies\glad (1)\src\glad.c" />
+    <ClCompile Include="FileOps.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Shader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\Documents\dependencies\glad (1)\include\glad\glad.h" />
+    <ClInclude Include="FileOps.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Shader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fragment_shader.glsl" />
+    <None Include="vertex_shader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
