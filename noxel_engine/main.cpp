@@ -1,11 +1,12 @@
 // noxel_engine.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #include <iostream>
-#include <glad/glad.h>
+//#include <glad/glad.h>
 //#include <GLFW/glfw3.h>\
 
 #include "FileOps.h"
 #include "Renderer.h"
+#include "Shader.h"
 
 struct Vertex {
     float x;
@@ -22,7 +23,7 @@ int main() {
     }
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello Graphical World", nullptr, nullptr);
+    window = glfwCreateWindow(640, 480, "Noxel Engine", nullptr, nullptr);
     if (!window) {
         glfwTerminate();
         return -1;
@@ -50,68 +51,8 @@ int main() {
         1, 2, 3,
     };
 
-    const std::string vertex_shader_file_path = "vertex_shader.glsl";
-    std::string vertex_shader_src;
-    const char* vertex_shader_source; // Shader source can't take string needs const char * 
-
-
-    const std::string fragment_shader_file_path = "fragment_shader.glsl";
-    std::string fragment_shader_src;
-    const char* fragment_shader_source;
-
-    FileOps::load_shader(vertex_shader_file_path, vertex_shader_src);
-    vertex_shader_source = vertex_shader_src.c_str();
-
-    FileOps::load_shader(fragment_shader_file_path, fragment_shader_src);
-    fragment_shader_source = fragment_shader_src.c_str();
-
-
-    // create shader object
-    unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    unsigned int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-
-
-    glShaderSource(vertex_shader, 1, &vertex_shader_source, nullptr);
-    glShaderSource(fragment_shader, 1, &fragment_shader_source, nullptr);
-
-    glCompileShader(vertex_shader);
-
-    int  success;
-    char infoLog[512];
-    glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertex_shader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-
-    glCompileShader(fragment_shader);
-
-    glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertex_shader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-
-    //create shader program object
-    unsigned int shader_program = glCreateProgram();
-
-    glAttachShader(shader_program, vertex_shader);
-    glAttachShader(shader_program, fragment_shader);
-    glLinkProgram(shader_program);
-
-    //check shader program link success
-    GL_CALL(glGetProgramiv(shader_program, GL_LINK_STATUS, &success));
-    if (!success) {
-        glGetProgramInfoLog(shader_program, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKAGE\n" << infoLog << std::endl;
-    }
-
-    // we've linked shaders to program, so delete them  now
-    glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
-
+    // Create our basic shader program
+    Shader* basic_shader = new Shader("vertex_shader.glsl", "fragment_shader.glsl");
 
     // Create vertex buffer 
     unsigned int VBO;
@@ -147,7 +88,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         //use shader_program
-        glUseProgram(shader_program);
+        basic_shader->bind();
         glBindVertexArray(VAO);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //wireframe mode
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -159,6 +100,8 @@ int main() {
         glfwPollEvents();
     }
 
+    // Cleanup
+    delete basic_shader;
     glfwTerminate();
     return 0;
 }
