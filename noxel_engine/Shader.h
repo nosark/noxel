@@ -14,9 +14,9 @@ public:
 	void unbind() const;
 	void compile(unsigned int shader_obj_id, enum SHADER_TYPE shader_type);
 	void link(unsigned int shader_program_id);
-	unsigned int get_renderer_id() { return renderer_id; };
+	unsigned int get_renderer_id() { return m_renderer_id; };
 	~Shader();
 private:
-	unsigned int renderer_id;
+	unsigned int m_renderer_id;
 };
 

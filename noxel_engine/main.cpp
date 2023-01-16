@@ -1,8 +1,7 @@
 // noxel_engine.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+// Created by Kyle Nosar on 1/9/23
+
 #include <iostream>
-//#include <glad/glad.h>
-//#include <GLFW/glfw3.h>\
 
 #include "FileOps.h"
 #include "Renderer.h"
